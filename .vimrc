@@ -7,15 +7,26 @@ filetype off
 " TODO: Load plugins here (pathogen or vundle)
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
+Plug 'arzg/vim-colors-xcode'
+Plug 'wadackel/vim-dogrun'
+Plug 'megantiu/true.vim'
+Plug 'sainnhe/edge'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-surround'
+Plug 'posva/vim-vue'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Yggdroot/indentLine'
+Plug 'mattn/emmet-vim'
+Plug 'lyokha/vim-xkbswitch'
 call plug#end()
 
 " Turn on syntax highlighting
@@ -30,6 +41,9 @@ let mapleader = " "
 " Security
 set modelines=0
 
+"" Fix for highlight breaking on long lines
+"set redrawtime=10000
+
 " Show line numbers
 set number
 set relativenumber
@@ -37,6 +51,11 @@ set nu
 
 " Show file stats
 set ruler
+
+" Vim-XkbSwitcher config
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchIMappings = ['ru']
+let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
 
 " Configuration for indentLine plugin
 " let g:indentLine_setColors = 0
@@ -61,7 +80,7 @@ set encoding=utf-8
 set exrc
 
 " Whitespace
-set wrap
+set nowrap
 set textwidth=79
 set formatoptions=tcqrn1
 set tabstop=2
@@ -70,6 +89,12 @@ set softtabstop=2
 set expandtab
 set smartindent
 set noshiftround
+
+" Folding
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
 
 " Cursor motion
 set scrolloff=8
@@ -83,6 +108,11 @@ nnoremap k gk
 
 " Allow hidden buffers
 set hidden
+
+" Some servers have issues with backup files, see #649 set nobackup set nowritebackup
+" ' Better display for messages set cmdheight=2 '
+" You will have bad experience for diagnostic messages when it's default 400
+set updatetime=300
 
 " Rendering
 set ttyfast
@@ -143,28 +173,37 @@ let g:solarized_termtrans=1
 " colorscheme solarized
 " colorscheme onedark
 colorscheme gruvbox
-" highlight Normal ctermbg=None
+ "highlight Normal ctermbg=None
 " highlight LineNr ctermfg=DarkGrey
-" colorscheme Victoras
+"colorscheme Victoras
 
+if (has("termguicolors"))
+ set termguicolors
+endif
+
+"colorscheme xcodedark
+"colorscheme xcodedarkhc
+"colorscheme xcodelight
+"colorscheme xcodelighthc
+"colorscheme xcodewwdc
+"
+"colorscheme dogrun
+"
+"colorscheme true
+"
+"let g:edge_style = 'aura'
+"let g:edge_enable_italic = 1
+"let g:edge_disable_italic_comment = 1
+"colorscheme edge
+"
 
 " Fonts
 let g:airline_powerline_fonts = 1
+"let g:true_airline = 1
+"let g:airline_theme='true'
 
 " Files Fuzzy Finder (FZF)
 " set rtp+=/usr/local/opt/fzf
-
-" CoC config
-let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-tsserver',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-json',
-  \ 'coc-html',
-  \ 'coc-vetur',
-  \ ]
 
 " NerdTree config
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -194,6 +233,81 @@ inoremap <C-j> <esc>:m .+1<CR>==
 inoremap <C-k> <esc>:m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
+
+
+" CoC CONFIG: "
+
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-json',
+  \ 'coc-html',
+  \ 'coc-vetur',
+  \ ]
+
+" Use tab for trigger CoC completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Not used with <c-space> language imput changer
+"" Use <c-space> to trigger CoC completion.
+"inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm CoC completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <F2> <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+
+
+" Emmet CONFIG: "
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,vue EmmetInstall
+let g:user_emmet_mode='a'
+let g:user_emmet_leader_key='<C-E>'
 
 
 " AUTOCOMMANDS "
