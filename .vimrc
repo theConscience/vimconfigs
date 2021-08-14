@@ -44,29 +44,39 @@ set modelines=0
 "" Fix for highlight breaking on long lines
 "set redrawtime=10000
 
-" Show line numbers
+
+" SHOW LINE NUMBERS: "
+
 set number
 set relativenumber
 set nu
 
+
 " Show file stats
 set ruler
 
-" Vim-XkbSwitcher config
+
+" VIM XKBSWITCHER CONFIG: "
+
 let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
 let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
 
-" Configuration for indentLine plugin
+
+" CONFIGURATION FOR INDENTLINE PLUGIN: "
+
 " let g:indentLine_setColors = 0
 let g:indentLine_color_term = 400
 " let g:indentLine_bgcolor_term = 202
 " let g:indentLine_bgcolor_gui = '#FF5F00'
 
-" Blink cursor on error instead of beeping (grr)
+
+" BLINK CURSOR ON ERROR INSTEAD OF BEEPING:"
 set visualbell
 
-" Switching between cursor types in Normal and Insert
+
+" SWITCHING BETWEEN CURSOR TYPES IN NORMAL AND INSERT:"
+
 autocmd InsertEnter,InsertLeavePre * set cul!
 " autocmd InsertLeavePre * set nocul
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -79,7 +89,9 @@ set encoding=utf-8
 " Custom project .vimrc's
 set exrc
 
-" Whitespace
+
+" Whitespace: "
+
 set nowrap
 set textwidth=79
 set formatoptions=tcqrn1
@@ -90,21 +102,28 @@ set expandtab
 set smartindent
 set noshiftround
 
-" Folding
+
+" Folding: "
+
 set foldmethod=indent
 set foldnestmax=10
 set nofoldenable
 set foldlevel=2
 
-" Cursor motion
+
+" CURSOR MOTION: "
+
 set scrolloff=8
 set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
 
-" Move up/down editor lines
+
+" MOVE UP AND DOWN EDITOR LINES: "
+
 nnoremap j gj
 nnoremap k gk
+
 
 " Allow hidden buffers
 set hidden
@@ -124,7 +143,9 @@ set laststatus=2
 set showmode
 set showcmd
 
-" Searching
+
+" Searching: "
+
 nnoremap / /\v
 vnoremap / /\v
 set hlsearch
@@ -135,35 +156,53 @@ set smartcase
 set showmatch
 map <leader><space> :let @/=''<cr> " clear search
 
-" Columns config
+
+" COLUMNS CONFIG: "
+
 set colorcolumn=80
 set signcolumn=auto
 
-" Cash and backups
+
+" CASH AND BACKUPS:"
+
 set noswapfile
 set nobackup
 set undodir=~/.vim/undodir
 set undofile
 
-" Remap help key.
+
+" Remap HELP KEY: "
+
 inoremap <F1> <ESC>:set invfullscreen<CR>a
 nnoremap <F1> :set invfullscreen<CR>
 vnoremap <F1> :set invfullscreen<CR>
 
-" Textmate holdouts
 
-" Formatting
+" Textmate HOLDOUTS: "
+
+
+
+" Formatting: "
+
 map <leader>q gqip
 
-" Visualize tabs and newlines
+
+" VISUALIZE TABS AND NEWLINES: "
+
 set listchars=tab:▸\ ,eol:¬,space:∘
-" •
+"
 " Uncomment this to enable by default:
 " set list " To enable by default
 " Or use your leader key + l to toggle on/off
 map <leader>l :set list!<CR> " Toggle tabs and EOL
 
-" Color scheme (terminal)
+
+" COLOR SCHEMES FOR TERMINAL: "
+
+if (has("termguicolors"))
+ set termguicolors
+endif
+
 set t_Co=256
 set background=dark
 let g:solarized_termcolors=256
@@ -176,11 +215,7 @@ colorscheme gruvbox
  "highlight Normal ctermbg=None
 " highlight LineNr ctermfg=DarkGrey
 "colorscheme Victoras
-
-if (has("termguicolors"))
- set termguicolors
-endif
-
+"
 "colorscheme xcodedark
 "colorscheme xcodedarkhc
 "colorscheme xcodelight
@@ -197,7 +232,9 @@ endif
 "colorscheme edge
 "
 
-" Fonts
+
+" FONTS: "
+
 let g:airline_powerline_fonts = 1
 "let g:true_airline = 1
 "let g:airline_theme='true'
@@ -205,13 +242,17 @@ let g:airline_powerline_fonts = 1
 " Files Fuzzy Finder (FZF)
 " set rtp+=/usr/local/opt/fzf
 
-" NerdTree config
+
+" NerdTree CONFIG: "
+
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Cool 5 remaps:
+
+" Cool Five REMAPS: "
+
 " #1 yank big Y until end of line, not all line
 nnoremap Y y$
 " #2 keeping moving cursor centered at find lookups and line concatenation
@@ -233,6 +274,12 @@ inoremap <C-j> <esc>:m .+1<CR>==
 inoremap <C-k> <esc>:m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
+
+
+" MY REMAPS: "
+
+" for xkb switcher working not only at ESC
+inoremap <C-c> <esc>
 
 
 " CoC CONFIG: "
@@ -304,13 +351,14 @@ nmap <leader>f <Plug>(coc-format-selected)
 
 
 " Emmet CONFIG: "
+
 let g:user_emmet_install_global = 0
 autocmd FileType html,css,vue EmmetInstall
 let g:user_emmet_mode='a'
 let g:user_emmet_leader_key='<C-E>'
 
 
-" AUTOCOMMANDS "
+" AUTOCOMMANDS: "
 
 " Trim whitespace fn:
 
