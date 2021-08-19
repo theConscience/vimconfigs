@@ -6,23 +6,84 @@ filetype off
 
 " TODO: Load plugins here (pathogen or vundle)
 call plug#begin('~/.vim/plugged')
+
+" Color themes: "
 Plug 'morhetz/gruvbox'
 Plug 'arzg/vim-colors-xcode'
 Plug 'wadackel/vim-dogrun'
 Plug 'megantiu/true.vim'
 Plug 'sainnhe/edge'
+Plug 'sainnhe/everforest'
+Plug 'mcmartelle/vim-monokai-bold'
+Plug 'ashervb/synthwave.vim'
+Plug 'artanikin/vim-synthwave84'
+Plug 'relastle/bluewery.vim'
+Plug 'gilgigilgil/anderson.vim'
+Plug 'doums/darcula'
+Plug 'flrnd/candid.vim'
+Plug 'flrnd/plastic.vim'
+Plug 'ludokng/vim-odyssey'
+Plug 'sainnhe/archived-colors'
+Plug 'Rigellute/rigel'
+Plug 'lifepillar/vim-solarized8'
+Plug 'xstrex/FireCode.vim'
+Plug 'connorholyday/vim-snazzy'
+Plug 'rhysd/vim-color-spring-night'
+Plug 'zanglg/nova.vim'
+Plug 'colepeters/spacemacs-theme.vim'
+Plug 'sts10/vim-pink-moon'
+Plug 'Jimeno0/vim-chito'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'zcodes/vim-colors-basic'
+Plug 'nightsense/vim-crunchbang'
+Plug 'prognostic/plasticine'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'rhysd/vim-color-spring-night'
+Plug 'https://github.com/miconda/lucariox.vim.git'
+Plug 'ajmwagar/vim-deus'
+Plug 'dim13/smyck.vim'
+Plug 'nightsense/carbonized'
+Plug 'preocanin/greenwint'
+Plug 'arcticicestudio/nord-vim'
+Plug 'kamwitsta/nordisk'
+Plug 'KeitaNakamura/neodark.vim'
+Plug 'tssm/fairyfloss.vim'
+Plug 'tyrannicaltoucan/vim-quantum'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'muellan/am-colors'
+Plug 'bcicen/vim-vice'
+Plug 'raphamorim/lucario'
+Plug 'rakr/vim-one'
+Plug 'dracula/vim'
+Plug 'MvanDiemen/ghostbuster'
+Plug 'aereal/vim-colors-japanesque'
+Plug 'crater2150/vim-theme-chroma'
+Plug 'dikiaap/minimalist'
+Plug 'encody/nvim'
+Plug 'zaki/zazen'
+Plug 'machakann/vim-colorscheme-tatami'
 
+" Subsyntax highlighters: "
+"Plug 'pangloss/vim-javascript', { 'for': ['js'] }
+"Plug 'jelera/vim-javascript-syntax'
+Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
+Plug 'posva/vim-vue'
+
+" Other plugins: "
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
+Plug 'ryanoasis/nerd-fonts'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-surround'
-Plug 'posva/vim-vue'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Yggdroot/indentLine'
 Plug 'mattn/emmet-vim'
@@ -148,8 +209,8 @@ set showcmd
 
 nnoremap / /\v
 vnoremap / /\v
-set hlsearch
-"set nohlsearch
+"set hlsearch
+set nohlsearch
 set incsearch
 set ignorecase
 set smartcase
@@ -199,22 +260,31 @@ map <leader>l :set list!<CR> " Toggle tabs and EOL
 
 " COLOR SCHEMES FOR TERMINAL: "
 
+set background=dark
+
+"set termguicolors
+"set t_Co=256
+
 if (has("termguicolors"))
+ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
  set termguicolors
+else
+ set t_Co=256
+ "let g:synthwave_termcolors=256 " 256 color mode
 endif
 
-set t_Co=256
-set background=dark
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
+"let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
 " put https://raw.github.com/altercation/vim-colors-solarized/master/colors/solarized.vim
 " in ~/.vim/colors/ and uncomment:
-" colorscheme solarized
-" colorscheme onedark
-colorscheme gruvbox
- "highlight Normal ctermbg=None
-" highlight LineNr ctermfg=DarkGrey
-"colorscheme Victoras
+"colorscheme solarized
+
+"highlight Normal ctermbg=None
+"highlight LineNr ctermfg=DarkGrey
+"colorscheme onedark  " great theme
+"colorscheme gruvbox  " great theme
+" colorscheme victoras
 "
 "colorscheme xcodedark
 "colorscheme xcodedarkhc
@@ -231,6 +301,116 @@ colorscheme gruvbox
 "let g:edge_disable_italic_comment = 1
 "colorscheme edge
 "
+"colorscheme monokai-bold
+" colorscheme synthwave84
+"let g:airline_theme='synthwave'
+"colorscheme synthwave
+"
+" For dark
+"colorscheme bluewery
+"let g:lightline = { 'colorscheme': 'bluewery' }
+" For light
+"colorscheme bluewery-light
+"let g:lightline = { 'colorscheme': 'bluewery_light' }
+"colorscheme anderson
+"colorscheme darcula
+"colorscheme candid
+"colorscheme plastic
+"colorscheme odyssey
+"
+" ARCHIVED-COLORS THEMES: "
+"colorscheme atlantis
+"colorscheme cryslominsa
+"colorscheme desert-night
+"colorscheme fairy-garden
+"colorscheme grimoire
+"colorscheme ice-age
+"colorscheme lost-shrine
+"colorscheme vanilla-cake
+"
+"colorscheme rigel  " great theme
+"colorscheme solarized8
+"colorscheme FireCode
+"
+" let g:everforest_background = 'soft'
+"let g:everforest_background = 'medium'
+"let g:everforest_background = 'hard'
+" colorscheme everforest
+" let g:SnazzyTransparent = 1
+" colorscheme snazzy
+" let g:airline_theme = 'spring_night'
+" colorscheme spring-night
+"colorscheme nova
+"colorscheme spacemacs-theme
+"colorscheme pink-moon
+"colorscheme chito
+"colorscheme basic-dark
+"colorscheme basic-light
+" colorscheme basic-eighties
+"colorscheme basic-dark
+"colorscheme crunchbang
+"colorscheme plasticine
+"
+""let g:material_theme_style = 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker' | 'default-community' | 'palenight-community' | 'ocean-community' | 'lighter-community' | 'darker-community'
+"let g:material_theme_style = 'palenight'
+"let g:material_terminal_italics = 1
+"let g:airline_theme = 'material'
+"colorscheme material  " great theme
+"
+" let g:airline_theme = 'spring_night'
+" colorscheme spring-night
+"
+"colorscheme lucariox
+"colorscheme deus
+"colorscheme smyck
+"colorscheme carbonized-dark
+"colorscheme carbonized-light
+"colorscheme greenwint
+"colorscheme nord
+"colorscheme nordisk
+let g:lightline = {}
+let g:lightline.colorscheme = 'neodark'
+" let g:neodark#background = '#202020'  " for changing neodark BG
+colorscheme neodark  " great theme
+"colorscheme fairyfloss
+"let g:quantum_italics=1
+"let g:quantum_black=0
+"let g:airline_theme='quantum'
+"colorscheme quantum
+"let g:deepspace_italics=1
+"let g:airline_theme='deep_space'
+"colorscheme deep-space
+"colorscheme amlight
+"colorscheme amdark
+"colorscheme amcolors
+"colorscheme ampresent
+"colorscheme vice
+"colorscheme lucario
+"let g:one_allow_italics = 1
+"colorscheme one
+"colorscheme dracula
+"let g:ghostbuster_italics=1
+"colorscheme ghostbuster
+"colorscheme japanesque
+"let g:chroma_underline_style = "underline"
+"" or
+"let g:chroma_underline_style = "bold"
+"" see :help attr-list for possible values
+"let g:chroma_italic_style = "bold"
+"colorscheme chroma
+"let g:airline_theme='minimalist'
+"let g:airline_powerline_fonts = 1
+"let g:airline#extensions#tabline#enabled = 1
+"colorscheme minimalist  " great theme
+"" nvim themes:
+"colorscheme custom
+"colorscheme lyla
+"colorscheme molokai
+"colorscheme mustang
+"colorscheme wombat
+"colorscheme zazen
+"colorscheme tatami
+
 
 
 " FONTS: "
@@ -239,16 +419,88 @@ let g:airline_powerline_fonts = 1
 "let g:true_airline = 1
 "let g:airline_theme='true'
 
+
+" FZF: "
+
 " Files Fuzzy Finder (FZF)
 " set rtp+=/usr/local/opt/fzf
+nnoremap <C-p> :FZF<CR>
 
 
 " NerdTree CONFIG: "
+
+nmap <C-n> :NERDTreeToggle<CR>
+vmap ++ <plug>NERDCommenterToggle
+nmap ++ <plug>NERDCommenterToggle
+
+" open NERDTree automatically
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * NERDTree
+
+let g:NERDTreeIgnore = ['^node_modules$']
+
+let g:NERDTreeGitStatusWithFlags = 1
+"let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+"let g:NERDTreeGitStatusNodeColorization = 1
+"let g:NERDTreeColorMapCustom = {
+    "\ "Staged"    : "#0ee375",
+    "\ "Modified"  : "#d9bf91",
+    "\ "Renamed"   : "#51C9FC",
+    "\ "Untracked" : "#FCE77C",
+    "\ "Unmerged"  : "#FC51E6",
+    "\ "Dirty"     : "#FFBD61",
+    "\ "Clean"     : "#87939A",
+    "\ "Ignored"   : "#808080"
+    "\ }
+
+let g:NERDTreeGitStatusUseNerdFonts = 1
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+    \ 'Modified'  :'✹',
+    \ 'Staged'    :'✚',
+    \ 'Untracked' :'✭',
+    \ 'Renamed'   :'➜',
+    \ 'Unmerged'  :'═',
+    \ 'Deleted'   :'✖',
+    \ 'Dirty'     :'✗',
+    \ 'Ignored'   :'☒',
+    \ 'Clean'     :'✔︎',
+    \ 'Unknown'   :'?',
+    \ }
 
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" sync open file with NERDTree
+" " Check if NERDTree is open or active
+function! IsNERDTreeOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+    wincmd p
+  endif
+endfunction
+
+" Highlight currently open buffer in NERDTree
+autocmd BufEnter * call SyncTree()
+
+
+" Prettier CONFIG: "
+
+" vim-prettier
+"let g:prettier#quickfix_enabled = 0
+"let g:prettier#quickfix_auto_focus = 0
+" prettier command for coc
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" run prettier on save
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 
 " Cool Five REMAPS: "
@@ -278,6 +530,8 @@ nnoremap <leader>k :m .-2<CR>==
 
 " MY REMAPS: "
 
+" for exit to normal mode through fast 'jk' combination
+inoremap jk <ESC>
 " for xkb switcher working not only at ESC
 inoremap <C-c> <esc>
 
