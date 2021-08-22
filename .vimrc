@@ -63,31 +63,44 @@ Plug 'encody/nvim'
 Plug 'zaki/zazen'
 Plug 'machakann/vim-colorscheme-tatami'
 
-" Subsyntax highlighters: "
+" Subsyntax highlighters & autocompleters: "
 "Plug 'pangloss/vim-javascript', { 'for': ['js'] }
 "Plug 'jelera/vim-javascript-syntax'
+Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
-Plug 'posva/vim-vue'
+"Plug 'groenewege/vim-less'
+"Plug 'posva/vim-vue'
+Plug 'leafoftree/vim-vue-plugin'
 
-" Other plugins: "
+" Tips & Typings & Autocompletion support: "
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mattn/emmet-vim'
+
+" Tmux integration: "
 Plug 'christoomey/vim-tmux-navigator'
+
+" Navigation panels: "
+Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
-Plug 'scrooloose/nerdtree'
+
+" Fuzzy search panel: "
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+" Language switcher fix "
+Plug 'lyokha/vim-xkbswitch'
+
+" Other plugins: "
+Plug 'tpope/vim-surround'
+Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdcommenter'
-Plug 'ryanoasis/nerd-fonts'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tpope/vim-surround'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'Yggdroot/indentLine'
-Plug 'mattn/emmet-vim'
-Plug 'lyokha/vim-xkbswitch'
+Plug 'ryanoasis/nerd-fonts'
+
+
 call plug#end()
 
 " Turn on syntax highlighting
@@ -491,6 +504,30 @@ endfunction
 autocmd BufEnter * call SyncTree()
 
 
+" TagBar CONFIG: "
+nmap <F8> :TagbarToggle<CR>
+
+
+" Javasctipt LIBRARIES CONFIG: "
+let g:used_javascript_libs = 'lodash,vue'
+
+
+" Vim VUE Plugin CONFIG: "
+let g:vim_vue_plugin_config = {
+  \'syntax': {
+  \   'template': ['html'],
+  \   'script': ['javascript'],
+  \   'style': ['less'],
+  \},
+  \'full_syntax': [],
+  \'initial_indent': [],
+  \'attribute': 0,
+  \'keyword': 0,
+  \'foldexpr': 0,
+  \'debug': 0,
+  \}
+
+
 " Prettier CONFIG: "
 
 " vim-prettier
@@ -534,6 +571,17 @@ nnoremap <leader>k :m .-2<CR>==
 inoremap jk <ESC>
 " for xkb switcher working not only at ESC
 inoremap <C-c> <esc>
+" for indent with familiar cmd + ]
+"   using iterm2 hotkeys for cmd bindings
+"nnoremap <D-]> >>
+"nnoremap <D-[> <<
+inoremap >> <C-t>
+inoremap << <C-d>
+" For selection saving after changing blocks indentation:
+" and editor stays in Visual mode, not exiting to Normal,
+" so — . operator not working as expected.
+vnoremap > >gv
+vnoremap < <gv
 
 
 " CoC CONFIG: "
