@@ -93,6 +93,7 @@ Plug 'lyokha/vim-xkbswitch'
 
 " Other plugins: "
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -185,7 +186,7 @@ set nofoldenable
 set foldlevel=2
 
 
-" CURSOR MOTION: "
+" CURSOR MOTION AND MATCHIT: "
 
 set scrolloff=8
 set backspace=indent,eol,start
@@ -274,6 +275,7 @@ map <leader>l :set list!<CR> " Toggle tabs and EOL
 " COLOR SCHEMES FOR TERMINAL: "
 
 set background=dark
+"set background=light
 
 "set termguicolors
 "set t_Co=256
@@ -400,6 +402,7 @@ colorscheme neodark  " great theme
 "colorscheme vice
 "colorscheme lucario
 "let g:one_allow_italics = 1
+"let g:airline_theme='one'
 "colorscheme one
 "colorscheme dracula
 "let g:ghostbuster_italics=1
@@ -443,8 +446,7 @@ nnoremap <C-p> :FZF<CR>
 " NerdTree CONFIG: "
 
 nmap <C-n> :NERDTreeToggle<CR>
-vmap ++ <plug>NERDCommenterToggle
-nmap ++ <plug>NERDCommenterToggle
+
 
 " open NERDTree automatically
 "autocmd StdinReadPre * let s:std_in=1
@@ -504,6 +506,34 @@ endfunction
 autocmd BufEnter * call SyncTree()
 
 
+" NerdCommenter CONFIG: "
+vmap ++ <plug>NERDCommenterToggle
+nmap ++ <plug>NERDCommenterToggle
+
+"" NerdCommenter vim-vue fix:
+"let g:ft = ''
+
+"function! NERDCommenter_before()
+  "if &ft == 'vue'
+    "let g:ft = 'vue'
+    "let stack = synstack(line('.'), col('.'))
+    "if len(stack) > 0
+      "let syn = synIDattr((stack)[0], 'name')
+      "if len(syn) > 0
+        "exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
+      "endif
+    "endif
+  "endif
+"endfunction
+
+"function! NERDCommenter_after()
+  "if g:ft == 'vue'
+    "setf vue
+    "let g:ft = ''
+  "endif
+"endfunction
+
+
 " TagBar CONFIG: "
 nmap <F8> :TagbarToggle<CR>
 
@@ -511,6 +541,11 @@ nmap <F8> :TagbarToggle<CR>
 " Javasctipt LIBRARIES CONFIG: "
 let g:used_javascript_libs = 'lodash,vue'
 
+
+"" Vim VUE CONFIG: "
+""let g:vue_pre_processors = ['pug', 'less']
+"" or automatic check & load:
+"let g:vue_pre_processors = 'detect_on_enter'
 
 " Vim VUE Plugin CONFIG: "
 let g:vim_vue_plugin_config = {
