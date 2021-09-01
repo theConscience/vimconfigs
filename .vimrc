@@ -71,19 +71,31 @@ Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
 "Plug 'groenewege/vim-less'
 "Plug 'posva/vim-vue'
 Plug 'leafoftree/vim-vue-plugin'
+Plug 'wlangstroth/vim-racket'
+"Plug 'Olical/conjure', {'tag': 'v4.23.0'}
+
+" Decorative stuff: "
+"Plug 'vim-scripts/Rainbow-Parenthesis'
+Plug 'amdt/vim-niji'
 
 " Tips & Typings & Autocompletion support: "
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
+" for Racket
+Plug 'MicahElliott/vrod'
 
 " Tmux integration: "
 Plug 'christoomey/vim-tmux-navigator'
+
+" Send operation to other tmux Pane
+Plug 'sjl/tslime.vim'
 
 " Navigation panels: "
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/tagbar'
+Plug 'mbbill/undotree'
 
 " Fuzzy search panel: "
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -112,6 +124,7 @@ filetype plugin indent on
 
 " TODO: Pick a leader key
 let mapleader = " "
+let maplocalleader="\\"
 
 " Security
 set modelines=0
@@ -436,6 +449,19 @@ let g:airline_powerline_fonts = 1
 "let g:airline_theme='true'
 
 
+" Rainbow BRACKETS or NIJI CONFIG: ""
+let g:niji_dark_colours = [
+    \ [ '81', '#5fd7ff'],
+    \ [ '99', '#875fff'],
+    \ [ '1',  '#dc322f'],
+    \ [ '76', '#5fd700'],
+    \ [ '3',  '#b58900'],
+    \ [ '2',  '#859900'],
+    \ [ '6',  '#2aa198'],
+    \ [ '4',  '#268bd2'],
+    \ ]
+
+
 " FZF: "
 
 " Files Fuzzy Finder (FZF)
@@ -536,6 +562,24 @@ nmap ++ <plug>NERDCommenterToggle
 
 " TagBar CONFIG: "
 nmap <F8> :TagbarToggle<CR>
+let g:tagbar_ctags_bin = "/opt/homebrew/bin/ctags"
+
+
+" UndoTree CONFIG: "
+nnoremap <F5> :UndotreeToggle<CR>
+if has("persistent_undo")
+   "let target_path = expand('~/undodir')
+   let target_path = expand('~/.vim/undodir')
+
+    " create the directory and any parent directories
+    " if the location does not exist.
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+
+    let &undodir=target_path
+    set undofile
+endif
 
 
 " Javasctipt LIBRARIES CONFIG: "
@@ -693,6 +737,27 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,vue EmmetInstall
 let g:user_emmet_mode='a'
 let g:user_emmet_leader_key='<C-E>'
+
+
+" TSLIME CONFIG: "
+
+let g:tslime_ensure_trailing_newlines = 1
+let g:tslime_normal_mapping = '<localleader>t'
+let g:tslime_visual_mapping = '<localleader>t'
+let g:tslime_vars_mapping = '<localleader>T'
+
+
+" Lisp Scheme Racket Sicp LANGUAGES CONFIG:"
+
+autocmd filetype lisp,scheme,art,racket setlocal equalprg=/usr/local/bin/scmindent.rkt
+vnoremap <localleader>f :'<,'>!scmindent.rkt<CR>
+
+" Enable racket highlighting for .rkt files with `#lang sicp` dialect:
+if has("autocmd")
+  au BufReadPost *.rkt,*.rktl set filetype=racket
+  au filetype racket set lisp
+  au filetype racket set autoindent
+endif
 
 
 " AUTOCOMMANDS: "
