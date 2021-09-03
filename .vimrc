@@ -144,11 +144,43 @@ set nu
 set ruler
 
 
+" Keymap CONFIG: "
+
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
+
+
 " VIM XKBSWITCHER CONFIG: "
 
 let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
 let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
+let g:XkbSwitchAssistNKeymap = 1    " for commands r and f
+let g:XkbSwitchAssistSKeymap = 1    " for search lines
+"let g:XkbSwitchIMappingsTr = {
+      "\ 'ru':
+      "\ {'<': 'qwertyuiop[]asdfghjkl;''zxcvbnm,.`/'.
+      "\       'QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?~@#$^&|',
+      "\  '>': 'йцукенгшщзхъфывапролджэячсмитьбюё.'.
+      "\       'ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,Ё"№;:?/'},
+      "\ }
+
+" MEMO: if some of commands with this symbols will fail, remove them from next
+" line, but then they will become wrong in Xkb RussianWin input
+let g:XkbSwitchSkipIMappings =
+  \ {'*'    : ['.', '>', ':', ';', ',', '[', ']', "'", '{<CR>', '/*', '/*<CR>'],}
+  "\ {'js'   : ['.', ','],
+  "\  'vue'  : ['.', ','],
+  "\  'py'   : ['.', ','],
+  "\  'less' : ['.', ','],
+  "\  'styl' : ['.', ','],
+  "\  'pug'  : ['.', ','],
+  "\  'jade' : ['.', ','],
+  "\  'yml'  : ['.', ','],
+  "\  'md'   : ['.', ','],
+  "\  'rkt'  : ['.', ','],
+  "\  'json' : ['.', ',']}
 
 
 " CONFIGURATION FOR INDENTLINE PLUGIN: "
@@ -562,6 +594,7 @@ nmap ++ <plug>NERDCommenterToggle
 
 " TagBar CONFIG: "
 nmap <F8> :TagbarToggle<CR>
+" Fix for lost homebrew binary in Tmux:
 let g:tagbar_ctags_bin = "/opt/homebrew/bin/ctags"
 
 
@@ -629,7 +662,11 @@ nnoremap N Nzzzv
 nnoremap J mzJ'z
 " #3 fixing Undo behaviour with a breakpoints
 inoremap , ,<c-g>u
+" fixing xkbswitch russian б
+inoremap б б<c-g>u
 inoremap . .<c-g>u
+" fixing xkbswitch russian ю
+inoremap ю ю<c-g>u
 inoremap ! !<c-g>u
 inoremap ? ?<c-g>u
 " #4 fixing jumplist lag on back jump
@@ -647,11 +684,11 @@ nnoremap <leader>k :m .-2<CR>==
 " MY REMAPS: "
 
 " for exit to normal mode through fast 'jk' combination
-inoremap jk <ESC>
+"inoremap jk <ESC>
 " for xkb switcher working not only at ESC
 inoremap <C-c> <esc>
 " for indent with familiar cmd + ]
-"   using iterm2 hotkeys for cmd bindings
+"   Now using iterm2 hotkeys for cmd bindings instead of next 2 lines!
 "nnoremap <D-]> >>
 "nnoremap <D-[> <<
 inoremap >> <C-t>
@@ -661,6 +698,9 @@ inoremap << <C-d>
 " so — . operator not working as expected.
 vnoremap > >gv
 vnoremap < <gv
+" Black hole register for delition
+nnoremap <C-S-k> "_dd
+vnoremap <C-S-k> "_d
 
 
 " CoC CONFIG: "
@@ -689,7 +729,7 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Not used with <c-space> language imput changer
+" Not used with <c-space> language input changer
 "" Use <c-space> to trigger CoC completion.
 "inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -734,7 +774,7 @@ nmap <leader>f <Plug>(coc-format-selected)
 " Emmet CONFIG: "
 
 let g:user_emmet_install_global = 0
-autocmd FileType html,css,vue EmmetInstall
+autocmd FileType html,css,vue,less,xml,stylus,sass,scss,pug,jade EmmetInstall
 let g:user_emmet_mode='a'
 let g:user_emmet_leader_key='<C-E>'
 
