@@ -68,7 +68,10 @@ Plug 'machakann/vim-colorscheme-tatami'
 "Plug 'jelera/vim-javascript-syntax'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
-"Plug 'groenewege/vim-less'
+Plug 'JulesWang/css.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'groenewege/vim-less'
+" Plug 'genoma/vim-less', {'as': 'vim-less-2'}
 "Plug 'posva/vim-vue'
 Plug 'leafoftree/vim-vue-plugin'
 Plug 'wlangstroth/vim-racket'
@@ -98,7 +101,13 @@ Plug 'preservim/tagbar'
 Plug 'mbbill/undotree'
 
 " Fuzzy search panel: "
+Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+" Search with * in visual mode
+Plug 'nelstrom/vim-visual-star-search'
+" Helps with grepping results of FZF
+Plug 'mhinz/vim-grepper'
 
 " Language switcher fix "
 Plug 'lyokha/vim-xkbswitch'
@@ -107,7 +116,8 @@ Plug 'lyokha/vim-xkbswitch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'Yggdroot/indentLine'
-Plug 'scrooloose/nerdcommenter'
+"Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
@@ -130,7 +140,7 @@ let maplocalleader="\\"
 set modelines=0
 
 "" Fix for highlight breaking on long lines
-"set redrawtime=10000
+set redrawtime=10000
 
 
 " SHOW LINE NUMBERS: "
@@ -186,10 +196,13 @@ let g:XkbSwitchSkipIMappings =
 
 " CONFIGURATION FOR INDENTLINE PLUGIN: "
 
-" let g:indentLine_setColors = 0
-let g:indentLine_color_term = 400
-" let g:indentLine_bgcolor_term = 202
-" let g:indentLine_bgcolor_gui = '#FF5F00'
+"let g:indentLine_setColors = 0
+let g:indentLine_color_term = 200
+let g:indentLine_bgcolor_term = 10
+" "let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
+" let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
+let g:indentLine_defaultGroup = 'SpecialKey'
+let g:indentLine_char = '┊'
 
 
 " BLINK CURSOR ON ERROR INSTEAD OF BEEPING:"
@@ -200,14 +213,27 @@ set visualbell
 
 autocmd InsertEnter,InsertLeavePre * set cul!
 " autocmd InsertLeavePre * set nocul
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+"if $TERM_PROGRAM =~ 'iTerm'
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+"endif
 
-" Encoding
+" Same for TMUX cursors switching
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+else
+    let &t_SI = "\e[5 q"
+    let &t_EI = "\e[2 q"
+endif
+
+
+" Encoding: "
 set encoding=utf-8
 
-" Custom project .vimrc's
+
+" Custom project .vimrc's:
 set exrc
 
 
@@ -252,7 +278,7 @@ set hidden
 " Some servers have issues with backup files, see #649 set nobackup set nowritebackup
 " ' Better display for messages set cmdheight=2 '
 " You will have bad experience for diagnostic messages when it's default 400
-set updatetime=300
+set updatetime=1000
 
 " Rendering
 set ttyfast
@@ -275,7 +301,25 @@ set incsearch
 set ignorecase
 set smartcase
 set showmatch
-map <leader><space> :let @/=''<cr> " clear search
+map <leader><space> :let @/=''<cr> " clear search register
+
+" Search AND REPLACE: "
+
+" Press * to search for term under cursor, or a visual selection
+" then press key below to replace all instances in current file with
+" a new word
+nnoremap <leader>r :%s///g<Left><Left>
+nnoremap <leader>rc :%s///gc<Left><Left><Left>
+
+" Same as above, with help of vim-visual-star-search plugin
+" replaces all instances of current selection in all file
+xnoremap <leader>r :%s///g<Left><Left>
+xnoremap <leader>rc :%s///gc<Left><Left><Left>
+
+" Type a replacement term and press . to repeat the replacement again. Useful
+" for replacing a few instances of the term (comparable to multiple cursors).
+nnoremap <silent> z* :let @/='\<'.expand('<cword>').'\>'<CR>cgn
+xnoremap <silent> z* "sy:let @/=@s<CR>cgn
 
 
 " COLUMNS CONFIG: "
@@ -314,8 +358,8 @@ set listchars=tab:▸\ ,eol:¬,space:∘
 "
 " Uncomment this to enable by default:
 " set list " To enable by default
-" Or use your leader key + l to toggle on/off
-map <leader>l :set list!<CR> " Toggle tabs and EOL
+" Or use your leader key + . (was l) to toggle on/off
+map <leader>. :set list!<CR> " Toggle tabs and EOL
 
 
 " COLOR SCHEMES FOR TERMINAL: "
@@ -477,12 +521,19 @@ colorscheme neodark  " great theme
 
 " FONTS: "
 
+" Vim Airline CONFIG: "
 let g:airline_powerline_fonts = 1
 "let g:true_airline = 1
 "let g:airline_theme='true'
+" " Next two options is for making Airline Tab-like behaviour:
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 
-" Rainbow BRACKETS or NIJI CONFIG: ""
+" Rainbow BRACKETS OR NIJI CONFIG: ""
+
 let g:niji_dark_colours = [
     \ [ '81', '#5fd7ff'],
     \ [ '99', '#875fff'],
@@ -498,8 +549,44 @@ let g:niji_dark_colours = [
 " FZF: "
 
 " Files Fuzzy Finder (FZF)
-" set rtp+=/usr/local/opt/fzf
-nnoremap <C-p> :FZF<CR>
+"set rtp+=/usr/local/opt/fzf
+set rtp+=/opt/homebrew/bin/fzf
+nnoremap <C-p> :FZF -m<CR>
+" - Popup window (anchored to the bottom of the current window)
+let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 0.6, 'relative': v:true, 'yoffset': 1.0 } }
+let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+" Allow passing optional flags into the Rg command.
+"   Example: :Rg myterm -g '*.md'
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \ "rg --column --line-number --no-heading --color=always --smart-case " .
+  \ <q-args>, 1, fzf#vim#with_preview(), <bang>0)
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+function! s:ag_with_opts(arg, bang)
+  let tokens  = split(a:arg)
+  let ag_opts = join(filter(copy(tokens), 'v:val =~ "^-"'))
+  let query   = join(filter(copy(tokens), 'v:val !~ "^-"'))
+  call fzf#vim#ag(query, ag_opts, a:bang ? {} : {'down': '40%'})
+endfunction
+
+autocmd VimEnter * command! -nargs=* -bang Ag call s:ag_with_opts(<q-args>, <bang>0)
 
 
 " NerdTree CONFIG: "
@@ -566,31 +653,37 @@ autocmd BufEnter * call SyncTree()
 
 
 " NerdCommenter CONFIG: "
-vmap ++ <plug>NERDCommenterToggle
-nmap ++ <plug>NERDCommenterToggle
+"vmap ++ <plug>NERDCommenterToggle
+"nmap ++ <plug>NERDCommenterToggle
 
-"" NerdCommenter vim-vue fix:
-"let g:ft = ''
+" " NerdCommenter vim-vue fix:
+" let g:ft = ''
 
-"function! NERDCommenter_before()
-  "if &ft == 'vue'
-    "let g:ft = 'vue'
-    "let stack = synstack(line('.'), col('.'))
-    "if len(stack) > 0
-      "let syn = synIDattr((stack)[0], 'name')
-      "if len(syn) > 0
-        "exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
-      "endif
-    "endif
-  "endif
-"endfunction
+" function! NERDCommenter_before()
+"   if &ft == 'vue'
+"     let g:ft = 'vue'
+"     let stack = synstack(line('.'), col('.'))
+"     if len(stack) > 0
+"       let syn = synIDattr((stack)[0], 'name')
+"       if len(syn) > 0
+"         exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
+"       endif
+"     endif
+"   endif
+" endfunction
 
-"function! NERDCommenter_after()
-  "if g:ft == 'vue'
-    "setf vue
-    "let g:ft = ''
-  "endif
-"endfunction
+" function! NERDCommenter_after()
+"   if g:ft == 'vue'
+"     setf vue
+"     let g:ft = ''
+"   endif
+" endfunction
+
+
+"" Vim Commentary CONFIG: "
+"autocmd FileType vue setlocal commentstring=#\ %s
+vmap ++ gc
+nmap ++ gcc
 
 
 " TagBar CONFIG: "
@@ -616,8 +709,12 @@ if has("persistent_undo")
 endif
 
 
-" Javasctipt LIBRARIES CONFIG: "
+" Javascript LIBRARIES CONFIG: "
 let g:used_javascript_libs = 'lodash,vue'
+
+
+" Vim CSS3 SYNTAX CONFIG: "
+" setlocal iskeyword+=-  " Added to the augroup at the end of file
 
 
 "" Vim VUE CONFIG: "
@@ -625,7 +722,9 @@ let g:used_javascript_libs = 'lodash,vue'
 "" or automatic check & load:
 "let g:vue_pre_processors = 'detect_on_enter'
 
+
 " Vim VUE Plugin CONFIG: "
+" let g:vim_vue_plugin_load_full_syntax = 1
 let g:vim_vue_plugin_config = {
   \'syntax': {
   \   'template': ['html'],
@@ -639,6 +738,41 @@ let g:vim_vue_plugin_config = {
   \'foldexpr': 0,
   \'debug': 0,
   \}
+" let g:vim_vue_plugin_use_less = 1
+
+"" Get VUE tags (template / script / style):
+" autocmd FileType vue inoremap <buffer><expr> : InsertColon()
+
+" function! InsertColon()
+"   let tag = GetVueTag()
+"   echom 'Tag is '.tag
+"   return tag == 'template' ? ':' : ': '
+" endfunction
+
+" Change comment types in different files:
+function! OnChangeVueSyntax(syntax)
+  echom 'Syntax is '.a:syntax
+  if a:syntax == 'html'
+    setlocal commentstring=<!--%s-->
+    setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
+    " Fix syntax highlighting:
+    " setlocal syntax=vue
+  elseif a:syntax =~ 'css'
+    setlocal comments=s1:/*,mb:*,ex:*/ commentstring&
+    " Fix syntax highlighting:
+    " setlocal syntax=less
+  " elseif a:syntax == 'less'
+  "   setlocal commentstring=//%s
+  "   setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+  "   " Fix syntax highlighting:
+  "   setlocal syntax=less
+  else
+    setlocal commentstring=//%s
+    setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+    " Fix syntax highlighting:
+    " setlocal syntax=vue
+  endif
+endfunction
 
 
 " Prettier CONFIG: "
@@ -684,6 +818,8 @@ nnoremap <leader>k :m .-2<CR>==
 
 " MY REMAPS: "
 
+" Sourcing ~/.vimrc
+nnoremap <leader>so :so ~/.vimrc<CR>
 " for exit to normal mode through fast 'jk' combination
 "inoremap jk <ESC>
 " for xkb switcher working not only at ESC
@@ -702,6 +838,32 @@ vnoremap < <gv
 " Black hole register for delition
 nnoremap <C-S-k> "_dd
 vnoremap <C-S-k> "_d
+" Black hole register for single symbol `X` deletion:
+nnoremap x "_x
+nnoremap X "_x
+" Switch between Less and Vue syntaxes
+nnoremap <leader>zl :set syntax=less<CR>
+nnoremap <leader>zv :set syntax=vue<CR>
+"" Moving between buffers:
+" To open a new empty buffer
+nmap <leader>T :enew<cr>
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+" Switching soft linebreakes as in VScode (only for MacOs):
+nnoremap Ω :set wrap<CR>
+nnoremap ¸ :set nowrap<CR>
+" Saving file as in VScode (only for MacOs):
+nnoremap <C-s> :w<CR>
+" Same, but for iTerm mapping
+nnoremap Å :w<CR>
+
 
 
 " CoC CONFIG: "
@@ -714,8 +876,11 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-json',
   \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-stylelintplus',
   \ 'coc-vetur',
   \ ]
+" \ 'coc-stylelint',
 
 " Use tab for trigger CoC completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -750,8 +915,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use + (was K) to show documentation in preview window
+nnoremap <silent> + :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -815,3 +980,11 @@ augroup WOW_SONG
   autocmd!
   autocmd BufWritePre * :call TrimWhitespace()
 augroup END
+
+
+" Fix vim-css3-syntax props highlighting
+augroup VimCSS3Syntax
+  autocmd!
+  autocmd FileType css,vue,less setlocal iskeyword+=-
+augroup END
+
