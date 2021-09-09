@@ -155,7 +155,8 @@ set imsearch=0
 
 let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
-let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
+"let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
+let g:XkbSwitchLib = '/usr/local/lib/libxkbswitch.so'
 let g:XkbSwitchAssistNKeymap = 1    " for commands r and f
 let g:XkbSwitchAssistSKeymap = 1    " for search lines
 "let g:XkbSwitchIMappingsTr = {
