@@ -119,7 +119,7 @@ Plug 'Yggdroot/indentLine'
 "Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'ryanoasis/nerd-fonts'
 
@@ -179,7 +179,7 @@ let g:XkbSwitchAssistSKeymap = 1    " for search lines
 " MEMO: if some of commands with this symbols will fail, remove them from next
 " line, but then they will become wrong in Xkb RussianWin input
 let g:XkbSwitchSkipIMappings =
-  \ {'*'    : ['.', '>', ':', ';', ',', '[', ']', "'", '{<CR>', '/*', '/*<CR>'],}
+  \ {'*'    : ['.', '>', ':', ';', ',', '[', ']', '`', 'ё', "'", '{<CR>', '/*', '/*<CR>'],}
   "\ {'js'   : ['.', ','],
   "\  'vue'  : ['.', ','],
   "\  'py'   : ['.', ','],
@@ -353,7 +353,7 @@ map <leader>q gqip
 
 " VISUALIZE TABS AND NEWLINES: "
 
-set listchars=tab:▸\ ,eol:¬,space:∘
+set listchars=tab:▸\ ,eol:¬,space:·  "∘"
 "
 " Uncomment this to enable by default:
 " set list " To enable by default
@@ -598,6 +598,7 @@ nmap <C-n> :NERDTreeToggle<CR>
 "autocmd VimEnter * NERDTree
 
 let g:NERDTreeIgnore = ['^node_modules$']
+let NERDTreeShowHidden=1
 
 let g:NERDTreeGitStatusWithFlags = 1
 "let g:WebDevIconsUnicodeDecorateFolderNodes = 1
@@ -823,6 +824,8 @@ nnoremap <leader>so :so ~/.vimrc<CR>
 "inoremap jk <ESC>
 " for xkb switcher working not only at ESC
 inoremap <C-c> <esc>
+" for removing symbol on the right in Insert mode:
+inoremap <C-l> <C-o>x
 " for indent with familiar cmd + ]
 "   Now using iterm2 hotkeys for cmd bindings instead of next 2 lines!
 "nnoremap <D-]> >>
@@ -987,3 +990,4 @@ augroup VimCSS3Syntax
   autocmd FileType css,vue,less setlocal iskeyword+=-
 augroup END
 
+autocmd FileType scss,less,vue setl iskeyword+=@-@
