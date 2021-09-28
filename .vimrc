@@ -119,7 +119,7 @@ Plug 'Yggdroot/indentLine'
 "Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'ryanoasis/nerd-fonts'
 
@@ -167,6 +167,8 @@ let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
 "let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
 let g:XkbSwitchLib = '/usr/local/lib/libxkbswitch.so'
+" echo libcall(g:XkbSwitchLib, 'Xkb_Switch_getXkbLayout', '')
+" call libcall(g:XkbSwitchLib, 'Xkb_Switch_setXkbLayout', 'us')
 let g:XkbSwitchAssistNKeymap = 1    " for commands r and f
 let g:XkbSwitchAssistSKeymap = 1    " for search lines
 "let g:XkbSwitchIMappingsTr = {
@@ -199,8 +201,8 @@ let g:XkbSwitchSkipIMappings =
 "let g:indentLine_setColors = 0
 let g:indentLine_color_term = 200
 let g:indentLine_bgcolor_term = 10
-" "let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
-" let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
+"let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
+let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
 let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indentLine_char = '┊'
 
@@ -389,7 +391,7 @@ endif
 "highlight LineNr ctermfg=DarkGrey
 "colorscheme onedark  " great theme
 "colorscheme gruvbox  " great theme
-" colorscheme victoras
+colorscheme victoras
 "
 "colorscheme xcodedark
 "colorscheme xcodedarkhc
@@ -473,10 +475,10 @@ endif
 "colorscheme greenwint
 "colorscheme nord
 "colorscheme nordisk
-let g:lightline = {}
-let g:lightline.colorscheme = 'neodark'
-" let g:neodark#background = '#202020'  " for changing neodark BG
-colorscheme neodark  " great theme
+" let g:lightline = {}
+" let g:lightline.colorscheme = 'neodark'
+" " let g:neodark#background = '#202020'  " for changing neodark BG
+" colorscheme neodark  " great theme
 "colorscheme fairyfloss
 "let g:quantum_italics=1
 "let g:quantum_black=0
@@ -599,6 +601,7 @@ nmap <C-n> :NERDTreeToggle<CR>
 "autocmd VimEnter * NERDTree
 
 let g:NERDTreeIgnore = ['^node_modules$']
+let g:NERDTreeShowHidden = 1
 
 let g:NERDTreeGitStatusWithFlags = 1
 "let g:WebDevIconsUnicodeDecorateFolderNodes = 1
