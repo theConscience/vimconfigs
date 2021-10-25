@@ -65,7 +65,6 @@ Plug 'dikiaap/minimalist'
 Plug 'encody/nvim'
 Plug 'zaki/zazen'
 Plug 'machakann/vim-colorscheme-tatami'
-Plug 'dense-analysis/ale'
 
 " Subsyntax highlighters & autocompleters: "
 "Plug 'pangloss/vim-javascript', { 'for': ['js'] }
@@ -87,6 +86,7 @@ Plug 'wlangstroth/vim-racket'
 Plug 'amdt/vim-niji'
 
 " Tips & Typings & Autocompletion support: "
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 " for Racket
@@ -204,7 +204,7 @@ let g:XkbSwitchSkipIMappings =
 let g:indentLine_color_term = 200
 let g:indentLine_bgcolor_term = 10
 "let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
-let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
+" let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
 let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indentLine_char = '┊'
 
@@ -521,6 +521,141 @@ colorscheme victoras
 "colorscheme zazen
 "colorscheme tatami
 
+" Colorscheme SWITCHER: "
+
+" Switch color Themes:
+nnoremap <leader>s] :call NextColorscheme()<CR>
+nnoremap <leader>s[ :call PrevColorscheme()<CR>
+nnoremap <leader>s+ :call ToggleColorscheme('')<left><left>
+
+" pairs of colorschemes I like to use:
+" light is the first one, dark is the second."
+let g:duo_themes = [
+      \   {'name': 'xcodelight', 'indent_bg': '#FFFFFF'},
+      \   {'name': 'one', 'bg': 'dark', 'indent_bg': '#282C34'},
+      \   {'name': 'xcodelighthc', 'indent_bg': '#FFFFFF'},
+      \   {'name': 'xcodedark', 'bg': 'dark', 'indent_bg': '#292A30'},
+      \   {'name': 'xcodedarkhc', 'bg': 'dark', 'indent_bg': '#1F1F24'},
+      \   {'name': 'dracula', 'bg': 'dark', 'indent_bg': '#292A30'},
+      \   {'name': 'darcula', 'bg': 'dark', 'indent_bg': '#2B2B2B'},
+      \   {'name': 'onedark', 'bg': 'dark', 'indent_bg': '#282C34'},
+      \   {'name': 'gruvbox', 'bg': 'dark', 'indent_bg': '#272828'},
+      \   {'name': 'synthwave', 'bg': 'dark', 'indent_bg': '#322E39'},
+      \   {'name': 'synthwave84', 'bg': 'dark', 'indent_bg': '#252335'},
+      \   {'name': 'FireCode', 'bg': 'dark', 'indent_bg': '#000000'},
+      \   {'name': 'everforest', 'bg': 'dark', 'indent_bg': '#2f383e'},
+      \   {'name': 'neodark', 'bg': 'dark', 'indent_bg': '#FF5F00'},
+      \   {'name': 'victoras', 'bg': 'dark', 'indent_bg': '#016370'},
+      \ ]
+
+func! s:set_colorscheme(color)
+  if has_key(a:color, 'bg')
+    let &bg = a:color['bg']
+  endif
+  if has_key(a:color, 'indent_bg')
+    let g:indentLine_bgcolor_gui = a:color['indent_bg']
+  endif
+  if has_key(a:color, 'name')
+    exe "colorscheme ".a:color['name']
+  endif
+endfunc
+
+func! ToggleColorscheme(type)
+  if !empty(a:type)
+    " echom '1: Type is '.a:type
+    let color = filter(copy(g:duo_themes), {k, v -> v['name'] == a:type})[0]
+    " echom '1: color is '.color
+    call s:set_colorscheme(color)
+  else
+    " echom '2: Type is '.a:type
+    if !exists('g:colors_name')
+      let g:colors_name = 'default'
+    endif
+    let color = filter(copy(g:duo_themes), {k, v -> v['name'] != g:colors_name})[0]
+    call s:set_colorscheme(color)
+  endif
+endfunc
+
+func! NextColorscheme(...)
+  let loud = get(a:, 1, 0)
+  " echom '1: colorscheme is: '.g:colors_name
+
+  let found = 0
+  let updated = 0
+
+  for t in g:duo_themes
+    " echom 'found is: '.found
+    " echom 'theme is: '.t['name']
+    if found
+      " echom 'found is: '.found
+      if loud
+        echom 'switching theme to: '.t['name']
+      endif
+      call s:set_colorscheme(t)
+      let updated = 1
+      break
+    elseif t['name'] == g:colors_name
+      if loud
+        echom 'current theme is: '.t['name']
+      endif
+      let found = 1
+    endif
+  endfor
+  if !updated
+    " echom 'enable first theme: '.g:duo_themes[0]['name']
+    call s:set_colorscheme(g:duo_themes[0])
+  endif
+endfunc
+
+func! PrevColorscheme(...)
+  let loud = get(a:, 1, 0)
+  " echom '1: colorscheme is: '.g:colors_name
+
+  let found = 0
+  let updated = 0
+  let itemId = len(g:duo_themes)
+
+  while itemId > 0
+    let itemId -= 1
+    " echom 'found is: '.found
+
+    let t = g:duo_themes[itemId]
+    " echom 'theme is: '.t['name']
+
+    if found
+      " echom 'found is: '.found
+      if loud
+        echom 'switching theme to: '.t['name']
+      endif
+      call s:set_colorscheme(t)
+      let updated = 1
+      break
+    elseif t['name'] == g:colors_name
+      if loud
+        echom 'current theme is: '.t['name']
+      endif
+      let found = 1
+    endif
+  endwhile
+  if !updated
+    " echom 'enable first theme: '.g:duo_themes[0]['name']
+    call s:set_colorscheme(g:duo_themes[len(g:duo_themes) - 1])
+  endif
+endfunc
+
+" Mimic toggling behavior of Tim Popes unimpaired plugin
+nnoremap yot :call ToggleColorscheme()<CR>
+
+let s:force_dark = 0
+" Well, if it happens you run vim late, use dark colorscheme
+if strftime("%H") >= 19 || strftime("%H") < 7 || s:force_dark
+  " call s:set_colorscheme(g:duo_themes[1])
+  call ToggleColorscheme('neodark')
+else
+  " Light colors otherwise
+  " call s:set_colorscheme(g:duo_themes[0])
+  call ToggleColorscheme('victoras')
+endif
 
 
 " FONTS: "
