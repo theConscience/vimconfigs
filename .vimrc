@@ -4,6 +4,9 @@ set nocompatible
 " Helps force plugins to load correctly when it is turned back on below
 filetype off
 
+" Ale CONFIG: " (should be before Plugins load)
+let g:ale_disable_lsp = 1
+
 " TODO: Load plugins here (pathogen or vundle)
 call plug#begin('~/.vim/plugged')
 
@@ -62,9 +65,11 @@ Plug 'dikiaap/minimalist'
 Plug 'encody/nvim'
 Plug 'zaki/zazen'
 Plug 'machakann/vim-colorscheme-tatami'
+Plug 'dense-analysis/ale'
 
 " Subsyntax highlighters & autocompleters: "
 "Plug 'pangloss/vim-javascript', { 'for': ['js'] }
+"Plug 'jonsmithers/vim-html-template-literals'
 "Plug 'jelera/vim-javascript-syntax'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
@@ -119,7 +124,7 @@ Plug 'Yggdroot/indentLine'
 "Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'ryanoasis/nerd-fonts'
 
@@ -198,8 +203,8 @@ let g:XkbSwitchSkipIMappings =
 "let g:indentLine_setColors = 0
 let g:indentLine_color_term = 200
 let g:indentLine_bgcolor_term = 10
-" "let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
-" let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
+"let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
+let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
 let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indentLine_char = '┊'
 
@@ -388,7 +393,7 @@ endif
 "highlight LineNr ctermfg=DarkGrey
 "colorscheme onedark  " great theme
 "colorscheme gruvbox  " great theme
-" colorscheme victoras
+colorscheme victoras
 "
 "colorscheme xcodedark
 "colorscheme xcodedarkhc
@@ -472,10 +477,10 @@ endif
 "colorscheme greenwint
 "colorscheme nord
 "colorscheme nordisk
-let g:lightline = {}
-let g:lightline.colorscheme = 'neodark'
-" let g:neodark#background = '#202020'  " for changing neodark BG
-colorscheme neodark  " great theme
+" let g:lightline = {}
+" let g:lightline.colorscheme = 'neodark'
+" " let g:neodark#background = '#202020'  " for changing neodark BG
+" colorscheme neodark  " great theme
 "colorscheme fairyfloss
 "let g:quantum_italics=1
 "let g:quantum_black=0
@@ -708,6 +713,10 @@ if has("persistent_undo")
     set undofile
 endif
 
+" Vim HTML TEMPLATE LITERALS CONFIG: "
+" let g:html_indent_style1 = "inc"
+" let g:htl_css_templates
+" let g:htl_all_templates
 
 " Javascript LIBRARIES CONFIG: "
 let g:used_javascript_libs = 'lodash,vue'
@@ -773,18 +782,6 @@ function! OnChangeVueSyntax(syntax)
     " setlocal syntax=vue
   endif
 endfunction
-
-
-" Prettier CONFIG: "
-
-" vim-prettier
-"let g:prettier#quickfix_enabled = 0
-"let g:prettier#quickfix_auto_focus = 0
-" prettier command for coc
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" run prettier on save
-"let g:prettier#autoformat = 0
-"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 
 " Cool Five REMAPS: "
@@ -867,6 +864,30 @@ nnoremap <C-s> :w<CR>
 nnoremap Å :w<CR>
 
 
+" Ale CONFIG: "
+" let g:ale_fix_on_save = 1
+let g:ale_javascript_standard_use_global = 1
+let g:ale_linters = {
+  \   'javascript': ['standard', 'eslint'],
+  \}
+let g:ale_fixers = {'javascript': ['standard', 'eslint']}
+
+nmap <silent> <leader>g[ <Plug>(ale_previous_wrap)
+nmap <silent> <leader>g] <Plug>(ale_next_wrap)
+
+nmap <leader>at :ALEToggle<CR>
+
+nmap <leader>ff :ALEFix<CR>
+
+" Fix & Save without autocommands
+nmap <leader>fs :ALEFix<CR>:noa w<CR>
+" Fix & Save with autocommands
+nmap <leader>fsw :ALEFix<CR>:w<CR>
+
+nmap <leader>fsp :ALEFix!prettier<CR>
+nmap <leader>fse :ALEFix!eslint<CR>
+nmap <leader>fss :ALEFix!standard<CR>
+
 
 " CoC CONFIG: "
 
@@ -883,6 +904,7 @@ let g:coc_global_extensions = [
   \ 'coc-vetur',
   \ ]
 " \ 'coc-stylelint',
+
 
 " Use tab for trigger CoC completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -937,6 +959,22 @@ nmap <F2> <Plug>(coc-rename)
 " Remap for format selected region
 xmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format-selected)
+
+
+" Eslint CONFIG: "
+command! -nargs=0 EsLint :CocCommand eslint.executeAutoFIx
+
+
+" Prettier CONFIG: "
+
+" vim-prettier
+"let g:prettier#quickfix_enabled = 0
+"let g:prettier#quickfix_auto_focus = 0
+" prettier command for coc
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" run prettier on save
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 
 " Emmet CONFIG: "
