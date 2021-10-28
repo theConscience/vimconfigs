@@ -202,9 +202,12 @@ let g:XkbSwitchSkipIMappings =
 
 "let g:indentLine_setColors = 0
 let g:indentLine_color_term = 200
+" let g:indentLine_color_term = 239
 let g:indentLine_bgcolor_term = 10
 "let g:indentLine_bgcolor_gui = '#FF5F00'   " For Neodark theme
 " let g:indentLine_bgcolor_gui = '#016370'  " For Victoras theme
+" GVim
+" let g:indentLine_color_gui = '#75B9C2'    " For Victoras theme
 let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indentLine_char = '┊'
 
@@ -545,7 +548,7 @@ let g:duo_themes = [
       \   {'name': 'FireCode', 'bg': 'dark', 'indent_bg': '#000000'},
       \   {'name': 'everforest', 'bg': 'dark', 'indent_bg': '#2f383e'},
       \   {'name': 'neodark', 'bg': 'dark', 'indent_bg': '#FF5F00'},
-      \   {'name': 'victoras', 'bg': 'dark', 'indent_bg': '#016370'},
+      \   {'name': 'victoras', 'bg': 'dark', 'indent_color': '#5f959d', 'indent_bg': '#016370'},
       \ ]
 
 func! s:set_colorscheme(color)
@@ -554,6 +557,9 @@ func! s:set_colorscheme(color)
   endif
   if has_key(a:color, 'indent_bg')
     let g:indentLine_bgcolor_gui = a:color['indent_bg']
+  endif
+  if has_key(a:color, 'indent_color')
+    let g:indentLine_color_gui = a:color['indent_color']
   endif
   if has_key(a:color, 'name')
     exe "colorscheme ".a:color['name']
