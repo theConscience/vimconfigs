@@ -67,8 +67,9 @@ Plug 'zaki/zazen'
 Plug 'machakann/vim-colorscheme-tatami'
 
 " Subsyntax highlighters & autocompleters: "
-"Plug 'pangloss/vim-javascript', { 'for': ['js'] }
-"Plug 'jonsmithers/vim-html-template-literals'
+" Plug 'pangloss/vim-javascript', { 'for': ['js'] }
+Plug 'jonsmithers/vim-html-template-literals'
+Plug 'pangloss/vim-javascript'
 "Plug 'jelera/vim-javascript-syntax'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
@@ -855,9 +856,10 @@ if has("persistent_undo")
 endif
 
 " Vim HTML TEMPLATE LITERALS CONFIG: "
-" let g:html_indent_style1 = "inc"
-" let g:htl_css_templates
-" let g:htl_all_templates
+let g:html_indent_style1 = "inc"
+let g:htl_css_templates = 1
+let g:htl_all_templates = 1
+" let g:htl_debug = 1
 
 " Javascript LIBRARIES CONFIG: "
 let g:used_javascript_libs = 'lodash,vue'
@@ -1020,14 +1022,14 @@ nmap <leader>at :ALEToggle<CR>
 
 nmap <leader>ff :ALEFix<CR>
 
+nmap <leader>ffp :ALEFix!prettier<CR>
+nmap <leader>ffe :ALEFix!eslint<CR>
+nmap <leader>ffs :ALEFix!standard<CR>
+
 " Fix & Save without autocommands
 nmap <leader>fs :ALEFix<CR>:noa w<CR>
 " Fix & Save with autocommands
 nmap <leader>fsw :ALEFix<CR>:w<CR>
-
-nmap <leader>fsp :ALEFix!prettier<CR>
-nmap <leader>fse :ALEFix!eslint<CR>
-nmap <leader>fss :ALEFix!standard<CR>
 
 
 " CoC CONFIG: "
