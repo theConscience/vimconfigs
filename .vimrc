@@ -72,11 +72,13 @@ Plug 'jonsmithers/vim-html-template-literals'
 Plug 'pangloss/vim-javascript'
 "Plug 'jelera/vim-javascript-syntax'
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
+" Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
+Plug 'digitaltoad/vim-pug'
 Plug 'JulesWang/css.vim'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'groenewege/vim-less'
-" Plug 'genoma/vim-less', {'as': 'vim-less-2'}
+Plug 'wavded/vim-stylus'
+" Plug 'groenewege/vim-less'
+"" Plug 'genoma/vim-less', {'as': 'vim-less-2'}
 "Plug 'posva/vim-vue'
 Plug 'leafoftree/vim-vue-plugin'
 Plug 'wlangstroth/vim-racket'
@@ -879,9 +881,9 @@ let g:used_javascript_libs = 'lodash,vue'
 " let g:vim_vue_plugin_load_full_syntax = 1
 let g:vim_vue_plugin_config = {
   \'syntax': {
-  \   'template': ['html'],
+  \   'template': ['pug'],
   \   'script': ['javascript'],
-  \   'style': ['less'],
+  \   'style': ['stylus'],
   \},
   \'full_syntax': [],
   \'initial_indent': [],
@@ -1039,14 +1041,14 @@ let g:coc_global_extensions = [
   \ 'coc-pairs',
   \ 'coc-tsserver',
   \ 'coc-eslint',
-  \ 'coc-prettier',
   \ 'coc-json',
   \ 'coc-html',
   \ 'coc-css',
   \ 'coc-stylelintplus',
   \ 'coc-vetur',
+  \ 'coc-prettier',
+  \ 'coc-stylelint',
   \ ]
-" \ 'coc-stylelint',
 
 
 " Use tab for trigger CoC completion with characters ahead and navigate.
@@ -1123,7 +1125,8 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " Emmet CONFIG: "
 
 let g:user_emmet_install_global = 0
-autocmd FileType html,css,vue,less,xml,stylus,sass,scss,pug,jade EmmetInstall
+" autocmd FileType html,css,vue,less,xml,stylus,sass,scss,pug,jade EmmetInstall
+autocmd FileType html,css,vue,stylus,pug EmmetInstall
 let g:user_emmet_mode='a'
 let g:user_emmet_leader_key='<C-E>'
 
