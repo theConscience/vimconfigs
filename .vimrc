@@ -1175,3 +1175,10 @@ augroup VimCSS3Syntax
 augroup END
 
 autocmd FileType scss,less,vue setl iskeyword+=@-@
+
+" need to add:
+" - way to jump between kebab-cased words
+" - some aligner plugin
+" - Git plugin
+" - COC snippets for eslint, and others...
+"
