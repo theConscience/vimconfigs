@@ -25,7 +25,7 @@ Plug 'gilgigilgil/anderson.vim'
 Plug 'doums/darcula'
 Plug 'flrnd/candid.vim'
 Plug 'flrnd/plastic.vim'
-Plug 'ludokng/vim-odyssey'
+" Plug 'ludokng/vim-odyssey'
 Plug 'sainnhe/archived-colors'
 Plug 'Rigellute/rigel'
 Plug 'lifepillar/vim-solarized8'
@@ -38,14 +38,14 @@ Plug 'sts10/vim-pink-moon'
 Plug 'Jimeno0/vim-chito'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'zcodes/vim-colors-basic'
-Plug 'nightsense/vim-crunchbang'
+" Plug 'nightsense/vim-crunchbang'
 Plug 'prognostic/plasticine'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'rhysd/vim-color-spring-night'
 Plug 'https://github.com/miconda/lucariox.vim.git'
 Plug 'ajmwagar/vim-deus'
 Plug 'dim13/smyck.vim'
-Plug 'nightsense/carbonized'
+" Plug 'nightsense/carbonized'
 Plug 'preocanin/greenwint'
 Plug 'arcticicestudio/nord-vim'
 Plug 'kamwitsta/nordisk'
@@ -224,19 +224,36 @@ set visualbell
 autocmd InsertEnter,InsertLeavePre * set cul!
 " autocmd InsertLeavePre * set nocul
 "if $TERM_PROGRAM =~ 'iTerm'
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+    let &t_si = "\<esc>]50;cursorshape=1\x7" " vertical bar in insert mode
+    let &t_sr = "\<esc>]50;cursorshape=2\x7"
+    let &t_ei = "\<esc>]50;cursorshape=0\x7" " block in normal mode
 "endif
 
 " Same for TMUX cursors switching
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+" if exists('$TMUX')
+"     let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+"     let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+" else
+"     let &t_SI = "\e[5 q"
+"     let &t_EI = "\e[2 q"
+" endif
+
+if empty($TMUX)
+  " Vertical bar in insert mode
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  " Block in normal mode
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  " Underline in replace mode
+  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 else
-    let &t_SI = "\e[5 q"
-    let &t_EI = "\e[2 q"
+  " Vertical bar in insert mode
+  let &t_SI = "\e[5 q"
+  " Block in normal mode
+  let &t_SR = "\e[4 q"
+  " Underline in replace mode
+  let &t_EI = "\e[1 q"
 endif
+
 
 
 " Encoding: "
@@ -872,7 +889,7 @@ let g:used_javascript_libs = 'lodash,vue'
 
 
 "" Vim VUE CONFIG: "
-""let g:vue_pre_processors = ['pug', 'less']
+""let g:vue_pre_processors = ['pug', 'less', 'stylus']
 "" or automatic check & load:
 "let g:vue_pre_processors = 'detect_on_enter'
 
@@ -881,7 +898,7 @@ let g:used_javascript_libs = 'lodash,vue'
 " let g:vim_vue_plugin_load_full_syntax = 1
 let g:vim_vue_plugin_config = {
   \'syntax': {
-  \   'template': ['pug'],
+  \   'template': ['html', 'pug'],
   \   'script': ['javascript'],
   \   'style': ['stylus'],
   \},
@@ -987,6 +1004,7 @@ nnoremap x "_x
 nnoremap X "_x
 " Switch between Less and Vue syntaxes
 nnoremap <leader>zl :set syntax=less<CR>
+nnoremap <leader>zs :set syntax=stylus<CR>
 nnoremap <leader>zv :set syntax=vue<CR>
 "" Moving between buffers:
 " To open a new empty buffer
@@ -1126,6 +1144,7 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 let g:user_emmet_install_global = 0
 " autocmd FileType html,css,vue,less,xml,stylus,sass,scss,pug,jade EmmetInstall
+" autocmd FileType html,css,vue,less,xml,stylus,styl,sass,scss,pug,jade EmmetInstall
 autocmd FileType html,css,vue,stylus,pug EmmetInstall
 let g:user_emmet_mode='a'
 let g:user_emmet_leader_key='<C-E>'
@@ -1171,11 +1190,13 @@ augroup END
 " Fix vim-css3-syntax props highlighting
 augroup VimCSS3Syntax
   autocmd!
-  autocmd FileType css,vue,less setlocal iskeyword+=-
+  autocmd FileType css,vue,less,styl,stylus setlocal iskeyword+=-
 augroup END
 
-autocmd FileType scss,less,vue setl iskeyword+=@-@
+autocmd FileType scss,less,vue,styl,stylus setl iskeyword+=@-@
 
+
+" TODO:
 " need to add:
 " - way to jump between kebab-cased words
 " - some aligner plugin
