@@ -131,6 +131,9 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'ryanoasis/nerd-fonts'
 
+" Git plugins: "
+Plug 'tpope/vim-fugitive'
+
 
 call plug#end()
 
