@@ -293,7 +293,11 @@ set foldlevel=2
 set scrolloff=8
 set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
+
 runtime! macros/matchit.vim
+
+let g:matchparen_timeout = 2
+let g:matchparen_insert_timeout = 2
 
 
 " MOVE UP AND DOWN EDITOR LINES: "
@@ -1203,6 +1207,7 @@ autocmd FileType scss,less,vue,styl,stylus setl iskeyword+=@-@
 " need to add:
 " - way to jump between kebab-cased words
 " - some aligner plugin
-" - Git plugin
+" + Git plugin
 " - COC snippets for eslint, and others...
-"
+" - add LC command to zshell
+" -
