@@ -1013,6 +1013,7 @@ nnoremap X "_x
 nnoremap <leader>zl :set syntax=less<CR>
 nnoremap <leader>zs :set syntax=stylus<CR>
 nnoremap <leader>zv :set syntax=vue<CR>
+nnoremap <leader>zj :set syntax=javascript<CR>
 "" Moving between buffers:
 " To open a new empty buffer
 nmap <leader>T :enew<cr>
