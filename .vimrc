@@ -81,6 +81,7 @@ Plug 'wavded/vim-stylus'
 "" Plug 'genoma/vim-less', {'as': 'vim-less-2'}
 "Plug 'posva/vim-vue'
 Plug 'leafoftree/vim-vue-plugin'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'wlangstroth/vim-racket'
 "Plug 'Olical/conjure', {'tag': 'v4.23.0'}
 
@@ -178,7 +179,7 @@ let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
 let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
 let g:XkbSwitchAssistNKeymap = 1    " for commands r and f
-let g:XkbSwitchAssistSKeymap = 1    " for search lines
+"let g:XkbSwitchAssistSKeymap = 1    " for search lines
 "let g:XkbSwitchIMappingsTr = {
       "\ 'ru':
       "\ {'<': 'qwertyuiop[]asdfghjkl;''zxcvbnm,.`/'.
@@ -423,7 +424,7 @@ endif
 "highlight LineNr ctermfg=DarkGrey
 "colorscheme onedark  " great theme
 "colorscheme gruvbox  " great theme
-colorscheme victoras
+colorscheme dracula
 "
 "colorscheme xcodedark
 "colorscheme xcodedarkhc
@@ -1034,6 +1035,9 @@ nnoremap <C-s> :w<CR>
 " Same, but for iTerm mapping
 nnoremap Å :w<CR>
 
+" Saving file and clearing cache for faster work
+nnoremap <C-S-s> :w<CR>:e!<CR>:syntax sync fromstart<CR>:clearjumps<CR>
+
 
 " Ale CONFIG: "
 " let g:ale_fix_on_save = 1
@@ -1199,6 +1203,11 @@ augroup END
 augroup VimCSS3Syntax
   autocmd!
   autocmd FileType css,vue,less,styl,stylus setlocal iskeyword+=-
+augroup END
+
+augroup jsx_filetype
+  autocmd!
+  autocmd BufNewFile,BufRead *.jsx,*.tsx set filetype=javascript.jsx
 augroup END
 
 autocmd FileType scss,less,vue,styl,stylus setl iskeyword+=@-@
